@@ -1,4 +1,5 @@
 window.onload = function newTask() {
+    const regexp = /[0-9]/
     // задаем min/max для а
     const min = 6;
     const max = 9;
@@ -27,7 +28,7 @@ window.onload = function newTask() {
     n2.textContent = b;
 
     // задаем параметры canvas
-    let x = canvas.height = 96;
+    let x = canvas.height = 128;
     let y = canvas.width = 802;
 
     // узнаем отступ слева
@@ -38,28 +39,39 @@ window.onload = function newTask() {
 
     // расставляем инпуты
     labeln1.style.left = `${buffer + part * a / 2 - 8}px`;
+    labeln1.style.top = `${100 - a * 10}px`
     labeln2.style.left = `${buffer + part * a + part * b / 2 - 8}px`;
-    labeln2.style.top = '25px'
+    labeln2.style.top = `${100 - b * 10}px`
 
     // рендер a
-    ctx.beginPath();
-    ctx.moveTo(0, x);
-    ctx.quadraticCurveTo((part * a) / 2, -40, part * a, x);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "#e80ee0e9";
-    ctx.stroke();
+    drawArcedArrow(
+        ctx,
+        a * part / 2, // координаты x
+        x + part * a / 3, // координаты y
+        3 * part * a / 5, // радиус 
+        (Math.PI / 180) * 326, // начало
+        (Math.PI / 180) * 180, // конец
+        true // по часовой
+    )
 
     inputn1.addEventListener('input', (e) => {
-        if (e.target.value == a) {
+        let val = e.target.value
+        if (!regexp.test(val)) e.target.value = ''
+        if (val == a) {
             toggle(inputn1)
             toggle(inputn2)
             n1.style.backgroundColor = '';
             labeln1.textContent = a
             // рендер b
-            ctx.beginPath();
-            ctx.moveTo(part * a, x);
-            ctx.quadraticCurveTo(part * a + part * b / 2, 10, part * (a + b), x);
-            ctx.stroke();
+            drawArcedArrow(
+                ctx,
+                part * a + part * b / 2,
+                x + part * b / 3,
+                3 * part * b / 5,
+                (Math.PI / 180) * 326,
+                (Math.PI / 180) * 180,
+                true
+            )
         } else {
             n1.style.backgroundColor = 'yellow'
             inputn1.style.color = 'red'
@@ -67,7 +79,9 @@ window.onload = function newTask() {
     });
 
     inputn2.addEventListener('input', (e) => {
-        if (e.target.value == b) {
+        let val = e.target.value
+        if (!regexp.test(val)) e.target.value = ''
+        if (val == b) {
             toggle(inputn2)
             toggle(fin)
             toggle(inputSum)
@@ -80,6 +94,8 @@ window.onload = function newTask() {
     });
 
     inputSum.addEventListener('input', (e) => {
+        let val = e.target.value
+        if (!regexp.test(val)) e.target.value = ''
         if (e.target.value == answer) {
             fin.textContent = answer
             toggle(fin)
