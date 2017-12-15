@@ -8,6 +8,8 @@ window.onload = function newTask() {
     const n2 = document.querySelector('#n-2')
     const fin = document.querySelector('#final-answer')
 
+    const body = document.querySelector('body')
+
     const inputn1 = document.querySelector('#n-1__input')
     const inputn2 = document.querySelector('#n-2__input')
     const inputSum = document.querySelector('#sum__answer')
@@ -54,9 +56,23 @@ window.onload = function newTask() {
         true // по часовой
     )
 
-    inputn1.addEventListener('input', (e) => {
+    body.oninput = (e) => {
         let val = e.target.value
         if (!regexp.test(val)) e.target.value = ''
+        
+        let action = e.target.getAttribute('data-action')
+        switch (action) {
+            case 'n1': checkNumber1(e)
+                break;
+            case 'n2': checkNumber2(e)
+                break;
+            case 'answer': checkAnswer(e)
+                break;
+        }
+    };
+
+    checkNumber1 = (e) => {
+        let val = e.target.value
         if (val == a) {
             toggle(inputn1)
             toggle(inputn2)
@@ -76,11 +92,10 @@ window.onload = function newTask() {
             n1.style.backgroundColor = 'yellow'
             inputn1.style.color = 'red'
         }
-    });
+    };
 
-    inputn2.addEventListener('input', (e) => {
+    checkNumber2 = (e) => {
         let val = e.target.value
-        if (!regexp.test(val)) e.target.value = ''
         if (val == b) {
             toggle(inputn2)
             toggle(fin)
@@ -91,11 +106,10 @@ window.onload = function newTask() {
             n2.style.backgroundColor = 'yellow'
             inputn2.style.color = 'red'
         }
-    });
+    };
 
-    inputSum.addEventListener('input', (e) => {
+    checkAnswer = (e) => {
         let val = e.target.value
-        if (!regexp.test(val)) e.target.value = ''
         if (e.target.value == answer) {
             fin.textContent = answer
             toggle(fin)
@@ -103,7 +117,7 @@ window.onload = function newTask() {
         } else {
             inputSum.style.color = 'red'
         }
-    })
+    };
 
     toggle = (target) => {
         target.classList.toggle('none')
