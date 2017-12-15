@@ -56,10 +56,12 @@ window.onload = function newTask() {
         true // по часовой
     )
 
+    inputn1.focus();
+
     body.oninput = (e) => {
         let val = e.target.value
         if (!regexp.test(val)) e.target.value = ''
-        
+
         let action = e.target.getAttribute('data-action')
         switch (action) {
             case 'n1': checkNumber1(e)
@@ -76,6 +78,7 @@ window.onload = function newTask() {
         if (val == a) {
             toggle(inputn1)
             toggle(inputn2)
+            inputn2.focus()
             n1.style.backgroundColor = '';
             labeln1.textContent = a
             // рендер b
@@ -100,6 +103,7 @@ window.onload = function newTask() {
             toggle(inputn2)
             toggle(fin)
             toggle(inputSum)
+            inputSum.focus()
             labeln2.textContent = b
             n2.style.backgroundColor = '';
         } else {
